@@ -7,6 +7,7 @@
   <style>
     body {
       display: flex;
+      flex-direction: column; /* stack elements vertically */
       justify-content: center;
       align-items: center;
       height: 100vh;
@@ -15,6 +16,12 @@
       background: linear-gradient(135deg, #1e3c72, #2a5298);
       color: #fff;
       text-align: center;
+    }
+
+    #dateTime {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      opacity: 0.9;
     }
 
     #dayCounter {
@@ -40,17 +47,33 @@
   </style>
 </head>
 <body>
+  <div id="dateTime"></div>
   <div id="dayCounter"></div>
 
   <script>
     // Hard-coded start date: 01.01.2026
-    const startDate = new Date("2025-01-01");
-    const today = new Date();
+    const startDate = new Date("2026-01-01");
 
-    const diffTime = today - startDate;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    function updateDisplay() {
+      const now = new Date();
 
-    document.getElementById("dayCounter").textContent = `Day ${diffDays}`;
+      // Format current date and time
+      const options = { 
+        weekday: 'long', year: 'numeric', month: 'long', 
+        day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' 
+      };
+      document.getElementById("dateTime").textContent = now.toLocaleString('en-GB', options);
+
+      // Calculate day difference
+      const diffTime = now - startDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+      document.getElementById("dayCounter").textContent = `Day ${diffDays}`;
+    }
+
+    // Update immediately and every second
+    updateDisplay();
+    setInterval(updateDisplay, 1000);
   </script>
 </body>
 </html>
